@@ -464,9 +464,10 @@ func (d *Datapath) reportFlow(p *packet.Packet, sourceID string, destID string, 
 		L4Protocol: p.IPProto,
 		Count:      1,
 	}
-
+	fmt.Println("\n ACTION PACKET", report.Action)
+	fmt.Println("OBS ACTION PACKET", packet.Action, "\n")
 	if report.ObserveAction.Observed() {
-		c.ObservedAction = packet.Action
+		c.ObservedAction = report.Action
 		c.ObservedPolicyID = packet.PolicyID
 	}
 

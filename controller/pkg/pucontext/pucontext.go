@@ -420,6 +420,7 @@ func (p *PUContext) searchRules(
 		observeIndex, observeAction := policies.observeRejectRules.Search(tags)
 		if observeIndex >= 0 {
 			reportingAction = observeAction.(*policy.FlowPolicy)
+			fmt.Println("Obs reject action", reportingAction)
 		}
 		// TODO: Is this if case required ?
 		if packetAction == nil {
@@ -429,6 +430,10 @@ func (p *PUContext) searchRules(
 				if reportingAction == nil {
 					reportingAction = packetAction
 				}
+				fmt.Println("\n ACTION 1")
+				fmt.Println("reporting action", reportingAction)
+				fmt.Println("packet action", packetAction)
+
 				return reportingAction, packetAction
 			}
 		}
@@ -439,6 +444,7 @@ func (p *PUContext) searchRules(
 		observeIndex, observeAction := policies.observeAcceptRules.Search(tags)
 		if observeIndex >= 0 {
 			reportingAction = observeAction.(*policy.FlowPolicy)
+			fmt.Println("Obs accept action", reportingAction)
 		}
 	}
 
@@ -446,6 +452,7 @@ func (p *PUContext) searchRules(
 		index, action := policies.acceptRules.Search(tags)
 		if index >= 0 {
 			packetAction = action.(*policy.FlowPolicy)
+
 			// Look for encrypt rules
 			encryptIndex, _ := policies.encryptRules.Search(tags)
 			if encryptIndex >= 0 {
@@ -460,6 +467,11 @@ func (p *PUContext) searchRules(
 			if reportingAction == nil {
 				reportingAction = packetAction
 			}
+
+			fmt.Println("\n ACTION 2")
+			fmt.Println("reporting action", reportingAction)
+			fmt.Println("packet action", packetAction)
+
 			return reportingAction, packetAction
 		}
 	}
@@ -471,6 +483,11 @@ func (p *PUContext) searchRules(
 		if reportingAction == nil {
 			reportingAction = packetAction
 		}
+
+		fmt.Println("\n ACTION 3")
+		fmt.Println("reporting action", reportingAction)
+		fmt.Println("packet action", packetAction)
+
 		return reportingAction, packetAction
 	}
 
@@ -485,6 +502,10 @@ func (p *PUContext) searchRules(
 	if reportingAction == nil {
 		reportingAction = packetAction
 	}
+
+	fmt.Println("\n ACTION 4")
+	fmt.Println("reporting action", reportingAction)
+	fmt.Println("packet action", packetAction)
 
 	return reportingAction, packetAction
 }

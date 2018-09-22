@@ -84,7 +84,7 @@ func (m *PolicyDB) AddPolicy(selector policy.TagSelector) (policyID int) {
 		tags:    selector.Clause,
 		actions: selector.Policy,
 	}
-
+	fmt.Println("\n Adding policy", e.actions.(*policy.FlowPolicy).Action)
 	// For each tag of the incoming policy add a mapping between the map tables
 	// and the structure that represents the policy
 	for _, keyValueOp := range selector.Clause {
@@ -175,6 +175,9 @@ func (m *PolicyDB) tagSplit(tag string, k *string, v *string) error {
 
 // Search searches for a set of tags in the database to find a policy match
 func (m *PolicyDB) Search(tags *policy.TagStore) (int, interface{}) {
+
+	fmt.Println("\n")
+	m.PrintPolicyDB()
 
 	count := make([]int, m.numberOfPolicies+1)
 
@@ -267,6 +270,9 @@ func (m *PolicyDB) PrintPolicyDB() {
 
 	for key, values := range m.equalMapTable {
 		for value, policies := range values {
+			for i := range policies {
+				fmt.Println("eqaul", policies[i].actions)
+			}
 			zap.L().Debug("Print Policy DB",
 				zap.String("policies", fmt.Sprintf("%#v", policies)),
 				zap.String("key", key),
@@ -279,6 +285,7 @@ func (m *PolicyDB) PrintPolicyDB() {
 
 	for key, values := range m.equalIDMapTable {
 		for _, policies := range values {
+			fmt.Println(policies.actions)
 			zap.L().Debug("Print Policy DB",
 				zap.String("policies", fmt.Sprintf("%#v", policies)),
 				zap.String("key", key),
@@ -290,6 +297,9 @@ func (m *PolicyDB) PrintPolicyDB() {
 
 	for key, values := range m.notEqualMapTable {
 		for value, policies := range values {
+			for i := range policies {
+				fmt.Println("not eqaul", policies[i].actions)
+			}
 			zap.L().Debug("Print Policy DB",
 				zap.String("policies", fmt.Sprintf("%#v", policies)),
 				zap.String("key", key),
